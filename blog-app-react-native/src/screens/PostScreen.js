@@ -1,22 +1,54 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, ScrollView, Alert } from 'react-native';
 
-export const PostScreen = () => {
+import { THEME } from '../theme';
+import { DATA } from '../data';
+
+export const PostScreen = ({ route }) => {
+    const { postId } = route.params;
+    const post = DATA.find((post) => post.id === postId);
+
+    const removeHandler = () => {
+        Alert.alert(
+            'Remove post',
+            'Do you want to remove the post?',
+            [
+                {
+                text: 'Cancel',
+                style: 'cancel',
+                },
+                {
+                text: 'Remove',
+                style: 'destructive',
+                onPress: () => {},
+                },
+            ],
+            {
+                cancelable: false,
+            },
+        );
+    }
+
     return (
-        <View style={styles.center}>
-            <Text>PostScreen</Text>
-        </View>
+        <ScrollView>
+            <Image source={{uri: post.img}} style={styles.image} />
+            <View style={styles.textWrapper}>
+                <Text style={styles.title}>{post.text}</Text>
+            </View>
+            <Button title='Remove' color={THEME.DANGER_COLOR} onPress={removeHandler} />
+        </ScrollView>
     )
 }
 
-PostScreen.navigationOptions = {
-    headerTitle: 'Post #42',
-}
-
 const styles = StyleSheet.create({
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    image: {
+        width: '100%',
+        height: 200,
+    },
+    textWrapper: {
+        padding: 10,
+    },
+    title: {
+        fontFamily: 'open-regular',
     }
 })
