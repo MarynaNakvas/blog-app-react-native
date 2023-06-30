@@ -3,38 +3,50 @@ import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 
 import { THEME } from '../theme';
 import { MainScreen } from '../screens/MainScreen';
 import { PostScreen } from '../screens/PostScreen';
 import { BookedScreen } from '../screens/BookedScreen';
+import { AboutScreen } from '../screens/AboutScreen';
+import { CreateScreen } from '../screens/CreateScreen';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
+
+const navigationTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      secondaryContainer: 'transparent',
+    },
+  };
+
+const navigatorOptions = {
+    headerStyle: {
+        backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+    },
+    headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+};
 
 const PostStack = createNativeStackNavigator();
 
 const PostNavigator = () => (
-    <PostStack.Navigator 
-        initialRouteName='Main'
-        screenOptions={{
-            headerStyle: {
-                backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-            },
-            headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-        }}
-    >
+    <PostStack.Navigator screenOptions={navigatorOptions}>
         <PostStack.Screen
             name='Main'
             component={MainScreen}
-            options={{
+            options={({ navigation }) => ({
                 headerTitle: 'My blog',
                 headerRight: () => (
                     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                         <Item
                             title='Take photo'
                             iconName='ios-camera'
-                            onPress={() => console.log('Take photo')} />
+                            onPress={() => navigation.navigate('Create')} />
                     </HeaderButtons>
                 ),
                 headerLeft: () => (
@@ -42,10 +54,10 @@ const PostNavigator = () => (
                         <Item
                             title='Toggle drawer'
                             iconName='ios-menu'
-                            onPress={() => console.log('Toggle drawer')} />
+                            onPress={() => navigation.toggleDrawer()} />
                     </HeaderButtons>
                 ),
-              }}
+            })}
         />
         <PostStack.Screen
             name='Post'
@@ -72,39 +84,64 @@ const PostNavigator = () => (
 const BookedStack = createNativeStackNavigator();
 
 const BookedNavigator = () => (
-    <BookedStack.Navigator
-        initialRouteName='Booked'
-        screenOptions={{
-            headerStyle: {
-                backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-            },
-            headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-        }}
-    >
-        <BookedStack.Screen name='Booked' component={BookedScreen} />
+    <BookedStack.Navigator screenOptions={navigatorOptions}>
+        <BookedStack.Screen
+            name='Booked'
+            component={BookedScreen}
+            options={({ navigation }) => ({
+                headerTitle: 'Favourites',
+                headerLeft: () => (
+                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                        <Item
+                            title='Toggle drawer'
+                            iconName='ios-menu'
+                            onPress={() => navigation.toggleDrawer()} />
+                    </HeaderButtons>
+                ),
+            })}
+        />
         <BookedStack.Screen
             name='Post'
             component={PostScreen}
+            options={({ route }) => {
+                const { date, booked } = route.params;
+                const iconName = booked ? 'ios-star' : 'ios-star-outline';
+                return {
+                    headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
+                    headerRight: () => (
+                        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                            <Item
+                                title='Take photo'
+                                iconName={iconName}
+                                onPress={() => console.log('Take photo')} />
+                        </HeaderButtons>
+                    ),
+                }
+            }}
         />
     </BookedStack.Navigator>
 );
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 
 const BottomNavigator = () => (
     <BottomTab.Navigator
-      screenOptions={{
-        activeTintColor: THEME.MAIN_COLOR,
-        tabBarLabelPosition: 'below-icon',
-        headerShown: false,
-      }}
+        activeColor='#fff'
+        barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
+        shifting={true}
+        screenOptions={{
+            tabBarLabelPosition: 'below-icon',
+            tabBarActiveTintColor: THEME.MAIN_COLOR,
+            headerShown: false,
+        }}
     >
         <BottomTab.Screen
             name='Post'
             component={PostNavigator}
             options={{
-                tabBarIcon: info => (
-                  <Ionicons name='ios-albums' size={25} color={info.tintColor} />
+                tabBarLabel: 'All',
+                tabBarIcon: ({ color }) => (
+                    <Ionicons name='ios-albums' size={25} color={color} />
                 )
             }}
         />
@@ -112,16 +149,93 @@ const BottomNavigator = () => (
             name='Booked'
             component={BookedNavigator}
             options={{
-                tabBarIcon: info => (
-                  <Ionicons name='ios-star' size={25} color={info.tintColor} />
+                tabBarLabel: 'Favourites',
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name='ios-star' size={25} color={color} />
                 )
             }}
         />
     </BottomTab.Navigator>
 )
 
+const AboutStack = createNativeStackNavigator(); 
+
+const AboutNavigator = () => (
+    <AboutStack.Navigator screenOptions={navigatorOptions}>
+        <AboutStack.Screen
+            name='About'
+            component={AboutScreen}
+            options={({ navigation }) => ({
+                headerTitle: 'About App',
+                headerLeft: () => (
+                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                        <Item
+                            title='Toggle drawer'
+                            iconName='ios-menu'
+                            onPress={() => navigation.toggleDrawer()} />
+                    </HeaderButtons>
+                ),
+            })}
+        />
+    </AboutStack.Navigator>
+);
+
+const CreateStack = createNativeStackNavigator(); 
+
+const CreateNavigator = () => (
+    <CreateStack.Navigator screenOptions={navigatorOptions}>
+        <CreateStack.Screen
+            name='Create'
+            component={CreateScreen}
+            options={({ navigation }) => ({
+                headerTitle: 'Create Post',
+                headerLeft: () => (
+                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                        <Item
+                            title='Toggle drawer'
+                            iconName='ios-menu'
+                            onPress={() => navigation.toggleDrawer()} />
+                    </HeaderButtons>
+                ),
+            })}
+        />
+    </CreateStack.Navigator>
+);
+
+const MainDrawer = createDrawerNavigator();
+
+const MainNavigator = () => (
+    <MainDrawer.Navigator
+        screenOptions={{
+            headerShown: false,
+            drawerActiveTintColor: THEME.MAIN_COLOR,
+            drawerLabelStyle: {
+                fontFamily: 'open-bold',
+            }
+        }}
+    >
+        <MainDrawer.Screen
+            name="PostTabs"
+            component={BottomNavigator}
+            options={{ drawerLabel: 'Main' }}
+        />
+        <MainDrawer.Screen
+            name="About"
+            component={AboutNavigator}
+            options={{ drawerLabel: 'About App' }}
+        />
+        <MainDrawer.Screen
+            name="Create"
+            component={CreateNavigator}
+            options={{ drawerLabel: 'New Post' }}
+        />
+    </MainDrawer.Navigator>
+)
+
 export const AppNavigation = () => (
-    <NavigationContainer>
-        <BottomNavigator />
-    </NavigationContainer>
+    <PaperProvider theme={navigationTheme}>
+        <NavigationContainer>
+            <MainNavigator />
+        </NavigationContainer>
+    </PaperProvider>
 );
