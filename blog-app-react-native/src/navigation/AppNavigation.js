@@ -8,6 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { THEME } from '../theme';
 import { MainScreen } from '../screens/MainScreen';
@@ -16,6 +17,7 @@ import { BookedScreen } from '../screens/BookedScreen';
 import { AboutScreen } from '../screens/AboutScreen';
 import { CreateScreen } from '../screens/CreateScreen';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
+import { toggleBooked } from '../store/actions/post';
 
 const navigationTheme = {
     ...DefaultTheme,
@@ -34,93 +36,106 @@ const navigatorOptions = {
 
 const PostStack = createNativeStackNavigator();
 
-const PostNavigator = () => (
-    <PostStack.Navigator screenOptions={navigatorOptions}>
-        <PostStack.Screen
-            name='Main'
-            component={MainScreen}
-            options={({ navigation }) => ({
-                headerTitle: 'My blog',
-                headerRight: () => (
-                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                        <Item
-                            title='Take photo'
-                            iconName='ios-camera'
-                            onPress={() => navigation.navigate('Create')} />
-                    </HeaderButtons>
-                ),
-                headerLeft: () => (
-                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                        <Item
-                            title='Toggle drawer'
-                            iconName='ios-menu'
-                            onPress={() => navigation.toggleDrawer()} />
-                    </HeaderButtons>
-                ),
-            })}
-        />
-        <PostStack.Screen
-            name='Post'
-            component={PostScreen}
-            options={({ route }) => {
-                const { date, booked } = route.params;
-                const iconName = booked ? 'ios-star' : 'ios-star-outline';
-                return {
-                    headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
+const PostNavigator = () => {
+    const dispatch = useDispatch();
+    const bookedPosts = useSelector((state) => state.post.bookedPosts);
+    return (
+        <PostStack.Navigator screenOptions={navigatorOptions}>
+            <PostStack.Screen
+                name='Main'
+                component={MainScreen}
+                options={({ navigation }) => ({
+                    headerTitle: 'My blog',
                     headerRight: () => (
                         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                             <Item
                                 title='Take photo'
-                                iconName={iconName}
-                                onPress={() => console.log('Take photo')} />
+                                iconName='ios-camera'
+                                onPress={() => navigation.navigate('Create')} />
                         </HeaderButtons>
                     ),
-                }
-            }}
-        />
-    </PostStack.Navigator>
-);
+                    headerLeft: () => (
+                        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                            <Item
+                                title='Toggle drawer'
+                                iconName='ios-menu'
+                                onPress={() => navigation.toggleDrawer()} />
+                        </HeaderButtons>
+                    ),
+                })}
+            />
+            <PostStack.Screen
+                name='Post'
+                component={PostScreen}
+                options={({ route }) => {
+                    const { postId, date } = route.params;
+                    const booked = bookedPosts.some((post) => post.id === postId);
+                    const iconName = booked ? 'ios-star' : 'ios-star-outline';
+                    return {
+                        headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
+                        headerRight: () => (
+                            <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                                <Item
+                                    title='Booked'
+                                    iconName={iconName}
+                                    onPress={() => {
+                                        console.log('HERE');
+                                        return dispatch(toggleBooked(postId))
+                                    }} />
+                            </HeaderButtons>
+                        ),
+                    }
+                }}
+            />
+        </PostStack.Navigator>
+    )
+};
 
 const BookedStack = createNativeStackNavigator();
 
-const BookedNavigator = () => (
-    <BookedStack.Navigator screenOptions={navigatorOptions}>
-        <BookedStack.Screen
-            name='Booked'
-            component={BookedScreen}
-            options={({ navigation }) => ({
-                headerTitle: 'Favourites',
-                headerLeft: () => (
-                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                        <Item
-                            title='Toggle drawer'
-                            iconName='ios-menu'
-                            onPress={() => navigation.toggleDrawer()} />
-                    </HeaderButtons>
-                ),
-            })}
-        />
-        <BookedStack.Screen
-            name='Post'
-            component={PostScreen}
-            options={({ route }) => {
-                const { date, booked } = route.params;
-                const iconName = booked ? 'ios-star' : 'ios-star-outline';
-                return {
-                    headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
-                    headerRight: () => (
+const BookedNavigator = () => {
+    const dispatch = useDispatch();
+    const bookedPosts = useSelector((state) => state.post.bookedPosts);
+    return (
+        <BookedStack.Navigator screenOptions={navigatorOptions}>
+            <BookedStack.Screen
+                name='Booked'
+                component={BookedScreen}
+                options={({ navigation }) => ({
+                    headerTitle: 'Favourites',
+                    headerLeft: () => (
                         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                             <Item
-                                title='Take photo'
-                                iconName={iconName}
-                                onPress={() => console.log('Take photo')} />
+                                title='Toggle drawer'
+                                iconName='ios-menu'
+                                onPress={() => navigation.toggleDrawer()} />
                         </HeaderButtons>
                     ),
-                }
-            }}
-        />
-    </BookedStack.Navigator>
-);
+                })}
+            />
+            <BookedStack.Screen
+                name='Post'
+                component={PostScreen}
+                options={({ route }) => {
+                    const { postId, date } = route.params;
+                    const booked = bookedPosts.some((post) => post.id === postId);
+                    const iconName = booked ? 'ios-star' : 'ios-star-outline';
+                    return {
+                        headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
+                        headerRight: () => (
+                            <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                                <Item
+                                    title='Booked'
+                                    iconName={iconName}
+                                    onPress={() => dispatch(toggleBooked(postId))} />
+                            </HeaderButtons>
+                        ),
+                    }
+                }}
+            />
+        </BookedStack.Navigator>
+    )
+};
 
 const BottomTab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 

@@ -1,12 +1,15 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, StyleSheet, Image, Button, ScrollView, Alert } from 'react-native';
 
 import { THEME } from '../theme';
-import { DATA } from '../data';
+import { removePost } from '../store/actions/post';
 
-export const PostScreen = ({ route }) => {
+export const PostScreen = ({ navigation, route }) => {
+    const dispatch = useDispatch();
+
     const { postId } = route.params;
-    const post = DATA.find((post) => post.id === postId);
+    const post = useSelector((state) => state.post.allPosts.find((post) => post.id === postId));
 
     const removeHandler = () => {
         Alert.alert(
@@ -20,13 +23,20 @@ export const PostScreen = ({ route }) => {
                 {
                 text: 'Remove',
                 style: 'destructive',
-                onPress: () => {},
+                onPress: () => {
+                    navigation.navigate('Main')
+                    dispatch(removePost(postId))
+                },
                 },
             ],
             {
                 cancelable: false,
             },
         );
+    }
+
+    if (!post) {
+        return null;
     }
 
     return (
