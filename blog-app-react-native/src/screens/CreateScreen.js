@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { ScrollView, View, Text, StyleSheet, TextInput, Image, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
@@ -11,11 +11,11 @@ export const CreateScreen = ({ navigation }) => {
 
     const [text, setText] = useState('');
 
-    const img = 'https://www.seehratimes.com/wp-content/uploads/2021/07/272728-2118x1412-summer-flowers-768x512.jpg';
+    const imgRef = useRef();
 
     const saveHandler = () => {
         const post = {
-            img,
+            img: imgRef.current,
             text,
             date: new Date().toJSON(),
             booked: false,
@@ -23,6 +23,10 @@ export const CreateScreen = ({ navigation }) => {
         dispatch(addPost(post));
         navigation.navigate('Main');
     };
+
+    const photoPickHandler = (uri) => {
+        imgRef.current = uri;
+    }
 
     return (
         <ScrollView>
@@ -38,11 +42,12 @@ export const CreateScreen = ({ navigation }) => {
                         onChangeText={setText}
                         multiline
                     />
-                    <PhotoPicker />
+                    <PhotoPicker onPick={photoPickHandler} />
                     <Button
                         title='Create post'
                         color={THEME.MAIN_COLOR}
                         onPress={saveHandler}
+                        disabled={!text}
                     />
                 </View>
             </TouchableWithoutFeedback>

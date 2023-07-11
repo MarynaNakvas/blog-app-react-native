@@ -11,7 +11,7 @@ export default function App() {
 
   if (!isReady) {
     <AppLoading
-      startAsync={bootstrap}
+      startAsync={bootstrap()}
       onFinish={() => setIsReady(true)}
       onError={(error) => console.log(error)}
     />

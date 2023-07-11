@@ -78,10 +78,7 @@ const PostNavigator = () => {
                                 <Item
                                     title='Booked'
                                     iconName={iconName}
-                                    onPress={() => {
-                                        console.log('HERE');
-                                        return dispatch(toggleBooked(postId))
-                                    }} />
+                                    onPress={() => dispatch(toggleBooked(route.params))} />
                             </HeaderButtons>
                         ),
                     }
@@ -127,7 +124,7 @@ const BookedNavigator = () => {
                                 <Item
                                     title='Booked'
                                     iconName={iconName}
-                                    onPress={() => dispatch(toggleBooked(postId))} />
+                                    onPress={() => dispatch(toggleBooked(route.params))} />
                             </HeaderButtons>
                         ),
                     }
