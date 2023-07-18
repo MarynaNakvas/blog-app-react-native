@@ -16,7 +16,7 @@ export const PostList = ({ data, onOpen }) => {
     <View style={styles.wrapper}>
         <FlatList
             data={data}
-            keyExtractor={(post) => post.id}
+            keyExtractor={(post) => post.text}
             renderItem={({ item }) => <Post post={item} onOpen={onOpen} />}
         />
     </View>

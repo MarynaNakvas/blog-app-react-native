@@ -20,10 +20,12 @@ export const fetchPosts = createAsyncThunk('post/fetchPosts', async () => {
 
 export const addPost = createAsyncThunk('post/addPost', async (post) => {
     const fileName = post.img.split('/').pop();
+    console.log('post.img', post.img);
+    console.log('fileName', fileName);
     const newPath = FileSystem.documentDirectory + fileName;
     const payload = {...post, img: newPath};
         try {
-            const data = await fetch(
+            const response = await fetch(
                 'https://blog-app-react-native-default-rtdb.firebaseio.com/posts.json',
                 {
                 method: 'POST',
@@ -33,6 +35,7 @@ export const addPost = createAsyncThunk('post/addPost', async (post) => {
                 body: JSON.stringify(payload),
                 }
             );
+            const data = await response.json()
             return {...payload, id: data.name};
         } catch (error) {
             console.log('Error: ', error);
