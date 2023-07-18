@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { PostList } from '../components/PostList';
-import { loadPosts } from '../store/actions/post';
+import { fetchPosts } from '../store-redux/thunks/post';
 import { THEME } from '../theme';
 
 export const MainScreen = ({ navigation }) => {
@@ -11,22 +11,23 @@ export const MainScreen = ({ navigation }) => {
 
     const openPostHandler = (post) => {
         navigation.navigate('Post', {
-            postId: post.id,
+            id: post.id,
             date: post.date,
             booked: post.booked,
         });
     }
 
     const allPosts = useSelector((state) => state.post.allPosts);
+    
     const loading = useSelector((state) => state.post.loading);
 
     useEffect(() => {
-        dispatch(loadPosts());
+        dispatch(fetchPosts());
     }, [dispatch]);
 
     if (loading) {
         return (
-            <View style={StyleSheet.center}>
+            <View style={styles.center}>
                 <ActivityIndicator color={THEME.MAIN_COLOR} />
             </View>
         )
@@ -37,7 +38,7 @@ export const MainScreen = ({ navigation }) => {
     )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     center: {
         flex: 1,
         justifyContent: 'center',

@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 
 import { AppNavigation } from './src/navigation/AppNavigation';
 import { bootstrap } from './src/bootstrap';
-import store from './src/store';
+import { store } from './src/store-redux/index';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);

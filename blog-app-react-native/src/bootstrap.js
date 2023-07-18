@@ -10,7 +10,6 @@ export async function bootstrap() {
         })
     
         await DB.init();
-        console.log('Database started...');
     } catch (error) {
         console.log('Error: ', error);
     }

@@ -17,7 +17,7 @@ import { BookedScreen } from '../screens/BookedScreen';
 import { AboutScreen } from '../screens/AboutScreen';
 import { CreateScreen } from '../screens/CreateScreen';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
-import { toggleBooked } from '../store/actions/post';
+import { toggleBooked } from '../store-redux/thunks/post';
 
 const navigationTheme = {
     ...DefaultTheme,
@@ -68,8 +68,8 @@ const PostNavigator = () => {
                 name='Post'
                 component={PostScreen}
                 options={({ route }) => {
-                    const { postId, date } = route.params;
-                    const booked = bookedPosts.some((post) => post.id === postId);
+                    const { id, date } = route.params;
+                    const booked = bookedPosts.some((post) => post.id === id);
                     const iconName = booked ? 'ios-star' : 'ios-star-outline';
                     return {
                         headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
@@ -114,8 +114,8 @@ const BookedNavigator = () => {
                 name='Post'
                 component={PostScreen}
                 options={({ route }) => {
-                    const { postId, date } = route.params;
-                    const booked = bookedPosts.some((post) => post.id === postId);
+                    const { id, date } = route.params;
+                    const booked = bookedPosts.some((post) => post.id === id);
                     const iconName = booked ? 'ios-star' : 'ios-star-outline';
                     return {
                         headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,

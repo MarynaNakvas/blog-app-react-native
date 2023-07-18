@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ScrollView, View, Text, StyleSheet, TextInput, Image, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import { THEME } from '../theme';
-import { addPost } from '../store/actions/post';
+import { addPost } from '../store-redux/thunks/post';
 import { PhotoPicker } from '../components/PhotoPicker';
 
 export const CreateScreen = ({ navigation }) => {
