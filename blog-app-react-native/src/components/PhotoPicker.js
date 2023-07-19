@@ -1,33 +1,27 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Button, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-
-// function askForPermissions() {
-//     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-    
-//     if (status !== 'granted') {
-//         Alert.alert('Error', 'You did not allow your camera to be used')
-//         return false;
-//     }
-//     return true;
-// }
 
 export const PhotoPicker = ({ onPick }) => {
     const [image, setImage] = useState(null);
 
     const takePhoto = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+        if (permissionResult.granted === false) {
+            Alert.alert("You've refused to allow this app to access your camera!");
+            return;
+          }
+        const result = await ImagePicker.launchCameraAsync({
             quality: 0.7,
             allowsEditing: false,
             aspect: [16, 9],
         });
 
         if (!result.canceled) {
-            imageUri = result.assets[0].uri;
-            setImage(imageUri);
+            const img = result.assets[0].uri;
+            setImage(img);
+            onPick(img);
         }
-        onPick(imageUri);
     };
 
     return (
