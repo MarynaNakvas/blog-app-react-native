@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Image, Button, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export const PhotoPicker = ({ onPick }) => {
-    const [image, setImage] = useState(null);
-
+export const PhotoPicker = ({ image, setImage, onPick }) => {
     const takePhoto = async () => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
         if (permissionResult.granted === false) {

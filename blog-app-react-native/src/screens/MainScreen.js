@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 import { PostList } from '../components/PostList';
 import { fetchPosts } from '../store-redux/thunks/post';
@@ -8,6 +9,7 @@ import { THEME } from '../theme';
 
 export const MainScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const [currentUser, setCurrentUser] = useState(null);
 
     const openPostHandler = (post) => {
         navigation.navigate('Post', {
@@ -22,6 +24,11 @@ export const MainScreen = ({ navigation }) => {
     const loading = useSelector((state) => state.post.loading);
 
     useEffect(() => {
+        const { currentUser } = firebase.auth();
+        setCurrentUser({ currentUser });
+    }, []);
+
+    useEffect(() => {
         dispatch(fetchPosts());
     }, [dispatch]);
 
@@ -34,7 +41,15 @@ export const MainScreen = ({ navigation }) => {
     }
 
     return (
-        <PostList data={allPosts} onOpen={openPostHandler} />
+        <View style={styles.container}>
+            <Text style={{fontSize: 20}}>
+                Hi
+                <Text style={{color:'#e93766', fontSize: 20}}> 
+                    {currentUser && currentUser.email}!
+                </Text>
+            </Text>
+            <PostList data={allPosts} onOpen={openPostHandler} />
+        </View>
     )
 }
 
