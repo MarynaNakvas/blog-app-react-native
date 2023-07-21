@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { firebase } from '@react-native-firebase/auth';
 
 import { PostList } from '../components/PostList';
 import { fetchPosts } from '../store-redux/thunks/post';
@@ -23,10 +23,10 @@ export const MainScreen = ({ navigation }) => {
     
     const loading = useSelector((state) => state.post.loading);
 
-    useEffect(() => {
-        const { currentUser } = firebase.auth();
-        setCurrentUser({ currentUser });
-    }, []);
+    // useEffect(() => {
+    //     const { currentUser } = firebase.auth();
+    //     setCurrentUser({ currentUser });
+    // }, []);
 
     useEffect(() => {
         dispatch(fetchPosts());

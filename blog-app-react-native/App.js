@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 
-import { AppNavigation } from './src/navigation/AppNavigation';
-import { bootstrap } from './src/bootstrap';
+import bootstrap from './src/bootstrap';
 import { store } from './src/store-redux/index';
+import MainNavigator from './src/navigation/MainNavigator';
+
+const navigationTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      secondaryContainer: 'transparent',
+    },
+  };
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
+  const isReady = bootstrap();
 
   if (!isReady) {
-    <AppLoading
-      startAsync={bootstrap()}
-      onFinish={() => setIsReady(true)}
-      onError={(error) => console.log(error)}
-    />
+      <AppLoading />
   }
 
   return (
-    <Provider store={store}>
-      <AppNavigation />
-    </Provider>
+      <Provider store={store}>
+          <PaperProvider theme={navigationTheme}>
+              <NavigationContainer>
+                  <MainNavigator />
+              </NavigationContainer>
+          </PaperProvider>
+      </Provider>
   );
 }

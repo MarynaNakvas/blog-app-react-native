@@ -1,16 +1,26 @@
+import { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
 
-import { DB } from './db';
+export default function bootstrap() {
+    const [isReady, setIsReady] = useState(false);
 
-export async function bootstrap() {
-    try {
-        await Font.loadAsync({
-            'open-bold': require('../assets/fonts/OpenSans-Bold.ttf'),
-            'open-regular': require('../assets/fonts/OpenSans-Regular.ttf'),
-        })
+    useEffect(() => {
+        async function loadResources() {
+            try {
+                await Font.loadAsync({
+                    'open-bold': require('../assets/fonts/OpenSans-Bold.ttf'),
+                    'open-regular': require('../assets/fonts/OpenSans-Regular.ttf'),
+                })
+        
+            } catch (error) {
+                console.log('Error: ', error);
+            } finally {
+                setIsReady(true);
+            }
+        }
+
+        loadResources();
+    }, [])
     
-        await DB.init();
-    } catch (error) {
-        console.log('Error: ', error);
-    }
-}
+    return isReady;
+};
