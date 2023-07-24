@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1091055901967-mkn5csga3kiogq5ats6slsskkfs9hc8b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1091055901967-mkn5csga3kiogq5ats6slsskkfs9hc8b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBKPxGrMzei5P84IeCQiHwcrKSIVGGb2zs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1091055901967</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.marina-nakvas.blog-app</string>
+	<key>PROJECT_ID</key>
+	<string>blog-app-react-native</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blog-app-react-native.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1091055901967:ios:f6cb336d60966c58b8727a</string>
+	<key>DATABASE_URL</key>
+	<string>https://blog-app-react-native-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

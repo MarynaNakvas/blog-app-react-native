@@ -7,6 +7,7 @@ import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import bootstrap from './src/bootstrap';
 import { store } from './src/store-redux/index';
 import MainNavigator from './src/navigation/MainNavigator';
+import AutNavigator from './src/navigation/AutNavigator';
 
 const navigationTheme = {
     ...DefaultTheme,
@@ -16,7 +17,14 @@ const navigationTheme = {
     },
   };
 
+const getIsSignedIn = () => {
+  // custom logic
+  return false;
+};
+
 export default function App() {
+  const isSignedIn = getIsSignedIn();
+  console.log('isSignedIn', isSignedIn);
   const isReady = bootstrap();
 
   if (!isReady) {
@@ -27,7 +35,7 @@ export default function App() {
       <Provider store={store}>
           <PaperProvider theme={navigationTheme}>
               <NavigationContainer>
-                  <MainNavigator />
+                {isSignedIn ? <MainNavigator /> : <AutNavigator />}  
               </NavigationContainer>
           </PaperProvider>
       </Provider>

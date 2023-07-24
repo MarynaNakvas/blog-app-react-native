@@ -21,7 +21,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.marina-nakvas.blog-app",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "package": "com.marina_nakvas.blog_app",
@@ -29,12 +30,18 @@
       "permissions": [
         "CAMERA",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "extra": {
       "eas": {
         "projectId": "b8793292-5049-4a70-9c1d-5f06058d7c68"
       }
-    }
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/perf",
+      "@react-native-firebase/crashlytics"
+    ]
   }
 }
