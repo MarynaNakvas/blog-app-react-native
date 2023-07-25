@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity  } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { StyleSheet, Text, TextInput, View, Button  } from 'react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+import { auth } from '../../firebaseConfig';
 
 export const SignUpScreen = ({ navigation }) => {
     const initialState = {
@@ -11,10 +13,9 @@ export const SignUpScreen = ({ navigation }) => {
     const [user, setUser] = useState(initialState);
 
     const handleSignUp = () => {
-        auth()
-            .createUserWithEmailAndPassword(user.email, user.password)
-            .then(() => navigation.navigate('Main'))
-            .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
+        createUserWithEmailAndPassword(auth, user.email, user.password)
+        .then(() => navigation.navigate('Main'))
+        .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
     }
     
     return (

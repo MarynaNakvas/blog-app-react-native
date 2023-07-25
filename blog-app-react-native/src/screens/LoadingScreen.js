@@ -1,15 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import auth from '@react-native-firebase/auth';
 
 export const LoadingScreen = ({ navigation }) => {   
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged((user) => {
-            navigation.navigate(user ? 'Main' : 'SignUp')
-          });
-        return subscriber;
-    }, []);
-
     return (
         <View style={styles.container}>
             <Text style={styles.text}>

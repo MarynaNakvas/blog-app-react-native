@@ -3,11 +3,13 @@ import { Provider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { onAuthStateChanged } from 'firebase/auth';
 
 import bootstrap from './src/bootstrap';
 import { store } from './src/store-redux/index';
 import MainNavigator from './src/navigation/MainNavigator';
 import AutNavigator from './src/navigation/AutNavigator';
+import { auth } from './firebaseConfig';
 
 const navigationTheme = {
     ...DefaultTheme,
@@ -17,15 +19,20 @@ const navigationTheme = {
     },
   };
 
-const getIsSignedIn = () => {
-  // custom logic
-  return false;
-};
-
 export default function App() {
-  const isSignedIn = getIsSignedIn();
+  const [isSignedIn, setIsSignedIn] = useState(false);
   console.log('isSignedIn', isSignedIn);
   const isReady = bootstrap();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+  }, []);
 
   if (!isReady) {
       <AppLoading />

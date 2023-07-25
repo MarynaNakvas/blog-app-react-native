@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+import { auth } from '../../firebaseConfig';
 
 export const LoginScreen = ({ navigation }) => {
     const initialState = {
@@ -11,11 +13,10 @@ export const LoginScreen = ({ navigation }) => {
     const [user, setUser] = useState(initialState);
 
     const handleLogin = () => {
-        auth()
-            .signInWithEmailAndPassword(user.email, user.password)
-            .then(() => navigation.navigate('Main'))
-            .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
-    }
+        signInWithEmailAndPassword(auth, user.email, user.password)
+        .then(() => navigation.navigate('Main'))
+        .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
+    };
 
     return (
         <View style={styles.container}>
