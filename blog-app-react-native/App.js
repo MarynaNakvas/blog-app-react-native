@@ -20,8 +20,8 @@ const navigationTheme = {
   };
 
 export default function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  console.log('isSignedIn', isSignedIn);
+  const [isSignedIn, setIsSignedIn] = useState(undefined);
+
   const isReady = bootstrap();
 
   useEffect(() => {

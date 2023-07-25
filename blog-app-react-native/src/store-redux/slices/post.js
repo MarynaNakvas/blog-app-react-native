@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchPosts, addPost, removePost, toggleBooked } from '../thunks/post';
 
 const initialState = {
+  user: null,
   allPosts: [],
   bookedPosts: [],
   loading: false,
@@ -11,7 +12,9 @@ const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    logout: () => initialState,
+    setUser: (state, action) => {
+      state.user = action.payload
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchPosts.pending, state => {
@@ -45,5 +48,5 @@ const postSlice = createSlice({
   },
 })
 
-export const { logout } = postSlice.actions;
+export const { setUser } = postSlice.actions;
 export default postSlice.reducer;

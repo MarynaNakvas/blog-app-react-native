@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button  } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 import { auth } from '../../firebaseConfig';
+import { THEME } from '../theme';
 
 export const SignUpScreen = ({ navigation }) => {
     const initialState = {
+        name: '',
         email: '',
         password: '',
         errorMessage: null,
@@ -14,6 +16,9 @@ export const SignUpScreen = ({ navigation }) => {
 
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, user.email, user.password)
+        .then(({ user }) => {
+            updateProfile(user, { displayName: user.name });
+          })
         .then(() => navigation.navigate('Main'))
         .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
     }
@@ -28,6 +33,13 @@ export const SignUpScreen = ({ navigation }) => {
                 </Text>
             }
 
+            <TextInput
+                placeholder='Name'
+                autoCapitalize='none'
+                style={styles.textInput}
+                onChangeText={(name) => setUser((prevValue) => ({ ...prevValue, name }))}
+                value={user.name}
+            />
             <TextInput
                 placeholder='Email'
                 autoCapitalize='none'
@@ -45,14 +57,14 @@ export const SignUpScreen = ({ navigation }) => {
             />
             <Button
                 title='Sign Up'
-                color="#e93766"
+                color={THEME.MAIN_COLOR}
                 onPress={handleSignUp}
             />
             <View>
                 <Text>
                     Already have an account?
                     <Text
-                        onPress={() => navigation.navigate('Login')}
+                        onPress={() => navigation.navigate('LogIn')}
                         style={styles.textLink}
                     >
                         Login
@@ -79,14 +91,14 @@ const styles = StyleSheet.create({
         marginVertical: 15,
     },
     textTitle: {
-        color:'#e93766',
+        color: THEME.MAIN_COLOR,
         fontSize: 40,
     },
     textError: {
-        color: 'red',
+        color: THEME.DANGER_COLOR,
     },
     textLink: {
-        color:'#e93766',
+        color: THEME.MAIN_COLOR,
         fontSize: 18,
     },
 })

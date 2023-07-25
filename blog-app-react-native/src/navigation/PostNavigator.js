@@ -27,7 +27,7 @@ const PostNavigator = () => {
                         <Item
                             title='Take photo'
                             iconName='ios-camera'
-                            onPress={() => navigation.navigate('Create')} />
+                            onPress={() => navigation.navigate('CreatePost')} />
                     </HeaderButtons>
                 ),
                 headerLeft: () => (

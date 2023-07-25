@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { auth } from '../../firebaseConfig';
+import { THEME } from '../theme';
 
 export const LoginScreen = ({ navigation }) => {
     const initialState = {
@@ -41,13 +42,13 @@ export const LoginScreen = ({ navigation }) => {
                 onChangeText={(password) => setUser((prevValue) => ({ ...prevValue, password }))}
                 value={user.password}
             />
-            <Button title='Login' color="#e93766" onPress={handleLogin} />
-            <View>
+            <Button title='Login' color={THEME.MAIN_COLOR} onPress={handleLogin} />
+            <View style={styles.textLinkWrapper}>
                 <Text>
                     Don't have an account?
                     <Text
-                        onPress={() => navigation.navigate('SignUp')}
                         style={styles.textLink}
+                        onPress={() => navigation.navigate('SignUp')}
                     >
                         Sign Up
                     </Text>
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         height: 40,
-        fontSize:20,
+        fontSize: 18,
         width: '90%',
         borderColor: '#9b9b9b',
         borderBottomWidth: 1,
@@ -73,14 +74,17 @@ const styles = StyleSheet.create({
         marginVertical: 15,
     },
     textTitle: {
-        color:'#e93766',
-        fontSize: 40,
+        color: THEME.MAIN_COLOR,
+        fontSize: 30,
     },
     textError: {
-        color: 'red',
+        color: THEME.DANGER_COLOR,
+    },
+    textLinkWrapper: {
+        margin: 20,
     },
     textLink: {
-        color:'#e93766',
+        color: THEME.MAIN_COLOR,
         fontSize: 18,
     },
 })

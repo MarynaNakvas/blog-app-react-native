@@ -1,10 +1,32 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+    createDrawerNavigator,
+    DrawerContentScrollView,
+    DrawerItemList,
+    DrawerItem,
+} from '@react-navigation/drawer';
+import { signOut } from 'firebase/auth';
 
+import { auth } from '../../firebaseConfig';
 import { THEME } from '../theme';
 import TabsNavigator from './TabsNavigator';
 import AboutNavigator from './AboutNavigator';
 import CreateNavigator from './CreateNavigator';
+
+const handleLogOut = () => {
+    signOut(auth)
+    .then(() => {console.log('Log Out')})
+    .catch((error) => console.log(error));
+};
+
+function CustomDrawerContent(props) {
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem label='Log Out' onPress={() => handleLogOut()} />
+      </DrawerContentScrollView>
+    );
+  }
 
 const Main = createDrawerNavigator();
 
@@ -17,6 +39,7 @@ const MainNavigator = () => (
                 fontFamily: 'open-bold',
             }
         }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
         <Main.Screen
             name='PostTabs'

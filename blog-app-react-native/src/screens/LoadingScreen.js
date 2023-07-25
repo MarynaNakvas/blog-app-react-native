@@ -1,13 +1,29 @@
-import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { onAuthStateChanged } from 'firebase/auth';
 
-export const LoadingScreen = ({ navigation }) => {   
+import { auth } from '../../firebaseConfig';
+import { THEME } from '../theme';
+import { setUser } from '../store-redux/slices/post';
+
+export const LoadingScreen = ({ navigation }) => { 
+  const dispatch = useDispatch(); 
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser({ uid: user.uid, name: user.displayName, email: user.email }));
+        navigation.navigate('Main');
+      } else {
+        navigation.navigate('LogIn');
+      }
+    });
+  }, [dispatch]);
+ 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>
-                Loading
-            </Text>
-            <ActivityIndicator color='#e93766' size="large" />
+            <ActivityIndicator color={THEME.MAIN_COLOR} size='large' />
         </View>
     )
 }
@@ -18,8 +34,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    color:'#e93766',
-    fontSize: 40,
-  }
 })
