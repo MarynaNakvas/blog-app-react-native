@@ -6,6 +6,8 @@ jobs:
       - image: cimg/node:18.10.0
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
