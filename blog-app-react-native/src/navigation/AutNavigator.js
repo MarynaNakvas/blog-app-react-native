@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { LoadingScreen } from '../screens/LoadingScreen';
-import { LoginScreen } from '../screens/LoginScreen';
+import { LogInScreen } from '../screens/LogInScreen';
 import { SignUpScreen } from '../screens/SignUpScreen';
 
 import { navigatorOptions } from './navigation-utils';
@@ -17,7 +17,7 @@ const AutNavigator = () => (
         />
         <AutStack.Screen
             name='LogIn'
-            component={LoginScreen}
+            component={LogInScreen}
         />
         <AutStack.Screen
             name='SignUp'

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
-import { firebase } from '@react-native-firebase/auth';
 
 import { PostList } from '../components/PostList';
 import { fetchPosts } from '../store-redux/thunks/post';
@@ -9,7 +8,6 @@ import { THEME } from '../theme';
 
 export const MainScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const [currentUser, setCurrentUser] = useState(null);
 
     const openPostHandler = (post) => {
         navigation.navigate('Post', {
@@ -22,11 +20,7 @@ export const MainScreen = ({ navigation }) => {
     const allPosts = useSelector((state) => state.post.allPosts);
     
     const loading = useSelector((state) => state.post.loading);
-
-    // useEffect(() => {
-    //     const { currentUser } = firebase.auth();
-    //     setCurrentUser({ currentUser });
-    // }, []);
+    const user = useSelector((state) => state.post.user);
 
     useEffect(() => {
         dispatch(fetchPosts());
@@ -42,12 +36,12 @@ export const MainScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 20}}>
-                Hi
-                <Text style={{color:'#e93766', fontSize: 20}}> 
-                    {currentUser && currentUser.email}!
+            <View style={styles.textWrapper}>
+                <Text style={{fontSize: 20}}>Hi</Text>
+                <Text style={styles.text}> 
+                    {!!user.name && user.name}!
                 </Text>
-            </Text>
+            </View>
             <PostList data={allPosts} onOpen={openPostHandler} />
         </View>
     )
@@ -58,5 +52,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    textWrapper: {
+        flexDirection: 'row',
+    },
+    text: {
+        color: THEME.MAIN_COLOR,
+        fontSize: 20,
+        marginLeft: 5,
+    },
 })

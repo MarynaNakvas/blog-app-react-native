@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button  } from 'react-native';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { StyleSheet, Text, TextInput, View, Button, Platform } from 'react-native';
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
-import { auth } from '../../firebaseConfig';
+import { auth, provider } from '../../firebaseConfig';
 import { THEME } from '../theme';
+import { styles } from '../styles/logIn';
 
 export const SignUpScreen = ({ navigation }) => {
     const initialState = {
@@ -12,24 +13,32 @@ export const SignUpScreen = ({ navigation }) => {
         password: '',
         errorMessage: null,
     };
-    const [user, setUser] = useState(initialState);
+    const [currentUser, setCurrentUser] = useState(initialState);
 
     const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, user.email, user.password)
+        createUserWithEmailAndPassword(auth, currentUser.email, currentUser.password)
         .then(({ user }) => {
-            updateProfile(user, { displayName: user.name });
+            updateProfile(user, { displayName: currentUser.name });
           })
         .then(() => navigation.navigate('Main'))
-        .catch((error) => setUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
-    }
+        .catch((error) => setCurrentUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
+    };
+
+    const handleSignUpWithGoogle = () => {
+        signInWithPopup(auth, provider)
+        .then((result) => {
+            GoogleAuthProvider.credentialFromResult(result);
+        })
+        .catch((error) => setCurrentUser((prevValue) => ({ ...prevValue, errorMessage: error.message })))
+    };
     
     return (
         <View style={styles.container}>
             <Text style={styles.textTitle}>Sign Up</Text>
 
-            {user.errorMessage &&
+            {currentUser.errorMessage &&
                 <Text style={styles.textError}>
-                    {user.errorMessage}
+                    {currentUser.errorMessage}
                 </Text>
             }
 
@@ -37,68 +46,48 @@ export const SignUpScreen = ({ navigation }) => {
                 placeholder='Name'
                 autoCapitalize='none'
                 style={styles.textInput}
-                onChangeText={(name) => setUser((prevValue) => ({ ...prevValue, name }))}
-                value={user.name}
+                onChangeText={(name) => setCurrentUser((prevValue) => ({ ...prevValue, name }))}
+                value={currentUser.name}
             />
             <TextInput
                 placeholder='Email'
                 autoCapitalize='none'
                 style={styles.textInput}
-                onChangeText={(email) => setUser((prevValue) => ({ ...prevValue, email }))}
-                value={user.email}
+                onChangeText={(email) => setCurrentUser((prevValue) => ({ ...prevValue, email }))}
+                value={currentUser.email}
             />
             <TextInput
                 secureTextEntry
                 placeholder='Password'
                 autoCapitalize='none'
                 style={styles.textInput}
-                onChangeText={(password) => setUser((prevValue) => ({ ...prevValue, password }))}
-                value={user.password}
+                onChangeText={(password) => setCurrentUser((prevValue) => ({ ...prevValue, password }))}
+                value={currentUser.password}
             />
-            <Button
-                title='Sign Up'
-                color={THEME.MAIN_COLOR}
-                onPress={handleSignUp}
-            />
-            <View>
-                <Text>
-                    Already have an account?
-                    <Text
-                        onPress={() => navigation.navigate('LogIn')}
-                        style={styles.textLink}
-                    >
-                        Login
-                    </Text>
+            <View style={styles.buttons}>
+                <Button
+                    title='Sign Up'
+                    color={THEME.MAIN_COLOR}
+                    onPress={handleSignUp}
+                />
+                {Platform.OS !== 'android' && (
+                    <View style={styles.signUpButton}>
+                        <Button
+                            title='Sign Up With Google'
+                            onPress={handleSignUpWithGoogle}
+                        />
+                    </View>
+                )}
+            </View>
+            <View style={styles.textWrapper}>
+                <Text>Already have an account?</Text>
+                <Text
+                    onPress={() => navigation.navigate('LogIn')}
+                    style={styles.textLink}
+                >
+                    Log In
                 </Text>
             </View>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textInput: {
-        height: 40,
-        fontSize:20,
-        width: '90%',
-        borderColor: '#9b9b9b',
-        borderBottomWidth: 1,
-        marginTop: 8,
-        marginVertical: 15,
-    },
-    textTitle: {
-        color: THEME.MAIN_COLOR,
-        fontSize: 40,
-    },
-    textError: {
-        color: THEME.DANGER_COLOR,
-    },
-    textLink: {
-        color: THEME.MAIN_COLOR,
-        fontSize: 18,
-    },
-})
