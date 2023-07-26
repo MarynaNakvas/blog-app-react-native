@@ -7,11 +7,18 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run ESLint
+          command: npm run lint
       - run:
           name: Install Dependencies
           command: npm install
       - run:
           name: Run tests
           command: npm run test
+      - run:
+          name: Publish to Expo
+          command: npx expo publish
+
           
