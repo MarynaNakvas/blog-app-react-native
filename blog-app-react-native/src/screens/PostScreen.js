@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, StyleSheet, Image, Button, ScrollView, Alert } from 'react-native';
 
 import { THEME } from '../theme';
-import { removePost } from '../store/actions/post';
+import { removePost } from '../store-redux/thunks/post';
 
 export const PostScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
 
-    const { postId } = route.params;
-    const post = useSelector((state) => state.post.allPosts.find((post) => post.id === postId));
+    const { id } = route.params;
+    const post = useSelector((state) => state.post.allPosts.find((post) => post.id === id));
 
     const removeHandler = () => {
         Alert.alert(
@@ -25,7 +25,7 @@ export const PostScreen = ({ navigation, route }) => {
                 style: 'destructive',
                 onPress: () => {
                     navigation.navigate('Main')
-                    dispatch(removePost(postId))
+                    dispatch(removePost(id))
                 },
                 },
             ],

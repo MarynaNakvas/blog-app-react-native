@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 
 export const Post = ({ post, onOpen }) => {
     return (

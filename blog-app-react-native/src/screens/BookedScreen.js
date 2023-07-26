@@ -6,7 +6,7 @@ import { PostList } from '../components/PostList';
 export const BookedScreen = ({ navigation }) => {
     const openPostHandler = (post) => {
         navigation.navigate('Post', {
-            postId: post.id,
+            id: post.id,
             date: post.date,
             booked: post.booked,
         });

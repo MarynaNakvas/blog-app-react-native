@@ -3,13 +3,14 @@ import { useDispatch } from 'react-redux';
 import { ScrollView, View, Text, StyleSheet, TextInput, Image, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import { THEME } from '../theme';
-import { addPost } from '../store/actions/post';
+import { addPost } from '../store-redux/thunks/post';
 import { PhotoPicker } from '../components/PhotoPicker';
 
 export const CreateScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const [text, setText] = useState('');
+    const [image, setImage] = useState(null);
 
     const imgRef = useRef();
 
@@ -22,6 +23,9 @@ export const CreateScreen = ({ navigation }) => {
         }
         dispatch(addPost(post));
         navigation.navigate('Main');
+
+        setText('');
+        setImage(null);
     };
 
     const photoPickHandler = (uri) => {
@@ -42,7 +46,7 @@ export const CreateScreen = ({ navigation }) => {
                         onChangeText={setText}
                         multiline
                     />
-                    <PhotoPicker onPick={photoPickHandler} />
+                    <PhotoPicker image={image} setImage={setImage} onPick={photoPickHandler} />
                     <Button
                         title='Create post'
                         color={THEME.MAIN_COLOR}
