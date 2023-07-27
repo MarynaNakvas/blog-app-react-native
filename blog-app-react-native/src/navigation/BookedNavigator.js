@@ -12,47 +12,52 @@ import { navigatorOptions } from './navigation-utils';
 const Booked = createNativeStackNavigator();
 
 const BookedNavigator = () => {
-    const dispatch = useDispatch();
-    const bookedPosts = useSelector((state) => state.post.bookedPosts);
+  const dispatch = useDispatch();
+  const bookedPosts = useSelector((state) => state.post.bookedPosts);
 
-    return (
+  return (
     <Booked.Navigator screenOptions={navigatorOptions}>
-        <Booked.Screen
-            name='Booked'
-            component={BookedScreen}
-            options={({ navigation }) => ({
-                headerTitle: 'Favourites',
-                headerLeft: () => (
-                    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                        <Item
-                            title='Toggle drawer'
-                            iconName='ios-menu'
-                            onPress={() => navigation.toggleDrawer()} />
-                    </HeaderButtons>
-                ),
-            })}
-        />
-        <Booked.Screen
-            name='Post'
-            component={PostScreen}
-            options={({ route }) => {
-                const { id, date } = route.params;
-                const booked = bookedPosts.some((post) => post.id === id);
-                const iconName = booked ? 'ios-star' : 'ios-star-outline';
-                return {
-                    headerTitle: `Post from ${new Date(date).toLocaleDateString()}`,
-                    headerRight: () => (
-                        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                            <Item
-                                title='Booked'
-                                iconName={iconName}
-                                onPress={() => dispatch(toggleBooked(route.params))} />
-                        </HeaderButtons>
-                    ),
-                }
-            }}
-        />
+      <Booked.Screen
+        name="Booked"
+        component={BookedScreen}
+        options={({ navigation }) => ({
+          headerTitle: 'Favourites',
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+              <Item
+                title="Toggle drawer"
+                iconName="ios-menu"
+                onPress={() => navigation.toggleDrawer()}
+              />
+            </HeaderButtons>
+          ),
+        })}
+      />
+      <Booked.Screen
+        name="Post"
+        component={PostScreen}
+        options={({ route }) => {
+          const { id, date } = route.params;
+          const booked = bookedPosts.some((post) => post.id === id);
+          const iconName = booked ? 'ios-star' : 'ios-star-outline';
+          return {
+            headerTitle: `Post from ${new Date(
+              date,
+            ).toLocaleDateString()}`,
+            headerRight: () => (
+              <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                <Item
+                  title="Booked"
+                  iconName={iconName}
+                  onPress={() => dispatch(toggleBooked(route.params))}
+                />
+              </HeaderButtons>
+            ),
+          };
+        }}
+      />
     </Booked.Navigator>
-)};
+  );
+};
 
 export default BookedNavigator;

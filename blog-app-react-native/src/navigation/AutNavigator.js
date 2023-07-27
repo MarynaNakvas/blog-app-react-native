@@ -7,23 +7,14 @@ import { SignUpScreen } from '../screens/SignUpScreen';
 
 import { navigatorOptions } from './navigation-utils';
 
-const AutStack = createNativeStackNavigator(); 
+const AutStack = createNativeStackNavigator();
 
 const AutNavigator = () => (
-    <AutStack.Navigator screenOptions={navigatorOptions}>
-        <AutStack.Screen
-            name='Login'
-            component={LoadingScreen}
-        />
-        <AutStack.Screen
-            name='LogIn'
-            component={LogInScreen}
-        />
-        <AutStack.Screen
-            name='SignUp'
-            component={SignUpScreen}
-        />
-    </AutStack.Navigator>
+  <AutStack.Navigator screenOptions={navigatorOptions}>
+    <AutStack.Screen name="Login" component={LoadingScreen} />
+    <AutStack.Screen name="LogIn" component={LogInScreen} />
+    <AutStack.Screen name="SignUp" component={SignUpScreen} />
+  </AutStack.Navigator>
 );
 
 export default AutNavigator;

@@ -23,4 +23,8 @@ jobs:
           name: Publish to Expo
           command: npx expo publish
 
-          
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
