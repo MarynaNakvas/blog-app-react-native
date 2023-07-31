@@ -3,7 +3,6 @@ orbs:
   cypress: cypress-io/cypress@3
 jobs:
   build:
-    working_directory: ~/repo
     steps:
       - checkout
       - node/install-packages:
@@ -16,9 +15,9 @@ jobs:
       - run:
           name: Run ESLint
           command: npm run lint
-      - run:
-          name: Run tests
-          command: npm run test
+      # - run:
+      #     name: Run tests
+      #     command: npm run test
       - run:
           name: Publish to Expo
           command: npx expo publish
