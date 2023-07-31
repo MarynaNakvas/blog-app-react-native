@@ -5,10 +5,18 @@ jobs:
   build:
     steps:
       - checkout
-      - run: npm install
-      - run: npm run lint
-      - run: npm run test
-      - run: npx expo publish
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run ESLint
+          command: npm run lint
+      - run:
+          name: Run tests
+          command: npm run test
+      - run:
+          name: Publish to Expo
+          command: npx expo publish
 
 workflows:
   version: 2
