@@ -11,7 +11,7 @@
     "lint:eslint": "eslint --fix src/",
     "lint:prettier": "prettier --write src/",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "test": "cypress run"
+    "test": "cypress run --headless --browser chrome"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
