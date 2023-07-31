@@ -4,6 +4,8 @@ orbs:
 jobs:
   build:
     working_directory: ~/repo
+    docker:
+      - image: cypress/browsers:node16.16.0-chrome107-ff107-edge
     steps:
       - checkout
       - node/install-packages:
