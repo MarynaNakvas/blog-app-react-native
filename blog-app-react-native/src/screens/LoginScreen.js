@@ -51,7 +51,7 @@ export const LogInScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text id="root" style={styles.textTitle}>
-        Login
+        Log In
       </Text>
       {user.errorMessage && (
         <Text style={styles.textError}>{user.errorMessage}</Text>

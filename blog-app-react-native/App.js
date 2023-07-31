@@ -35,7 +35,7 @@ export default function App() {
   }, []);
 
   if (!isReady) {
-      <AppLoading />
+    <AppLoading />
   }
 
   return (
