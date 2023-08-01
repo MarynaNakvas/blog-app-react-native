@@ -7,6 +7,12 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
+          name: Run Start
+          command: npm run start
+      - run:
+          name: Run Web
+          command: npm run web
+      - run:
           name: Run ESLint
           command: npm run lint
       - run:
