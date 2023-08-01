@@ -7,7 +7,6 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "cypress": "cypress open",
     "lint:eslint": "eslint --fix src/",
     "lint:prettier": "prettier --write src/",
     "lint": "npm run lint:eslint && npm run lint:prettier",
@@ -61,7 +60,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "cypress": "^12.17.2",
     "react-test-renderer": "^18.2.0"
   },
   "jest": {
