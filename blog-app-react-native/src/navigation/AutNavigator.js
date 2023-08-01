@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { LoadingScreen } from '../screens/LoadingScreen';
-import { LogInScreen } from '../screens/LogInScreen';
+import { LogInScreen } from '../screens/LoginScreen';
 import { SignUpScreen } from '../screens/SignUpScreen';
 
 import { navigatorOptions } from './navigation-utils';
