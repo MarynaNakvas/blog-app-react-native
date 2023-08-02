@@ -20,7 +20,7 @@ jobs:
           command: npm run test
       - run:
           name: Publish to Expo
-          command: npm run publish
+          command: npx expo publish
 
 workflows:
   version: 2
