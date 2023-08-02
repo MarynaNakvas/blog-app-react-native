@@ -10,7 +10,8 @@
     "lint:eslint": "eslint --fix src/",
     "lint:prettier": "prettier --write src/",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "test": "jest"
+    "test": "jest",
+    "publish": "expo publish"
   },
   "dependencies": {
     "@expo/config-plugins": "^6.0.0",
