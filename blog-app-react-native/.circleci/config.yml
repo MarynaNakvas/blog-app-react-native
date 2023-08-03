@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run:
           name: Publish to Expo
-          command: expo publish
+          command: npx expo-cli publish
 
 workflows:
   version: 2
