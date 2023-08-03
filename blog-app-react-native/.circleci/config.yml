@@ -1,8 +1,12 @@
 version: 2.1
 jobs:
   build:
+    docker:
+      - image: cimg/node:18.8
     steps:
       - checkout
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
       - run:
           name: Install Dependencies
           command: npm install
@@ -12,18 +16,43 @@ jobs:
       - run:
           name: Run Web
           command: npm run web
+  test:
+    docker:
+      - image: cimg/node:18.8
+    steps:
+      - checkout
       - run:
           name: Run ESLint
           command: npm run lint
       - run:
           name: Run tests
           command: npm run test
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+  deploy:
+    docker:
+      - image: cimg/node:18.8
+    steps:
+      - checkout
       - run:
           name: Publish to Expo
-          command: npx expo publish
+          command: expo publish
 
 workflows:
   version: 2
-  build-deploy:
+  build_and_test:
     jobs:
       - build
+      - test:
+          requires:
+            - build
+      - approve_deploy:
+          type: approval
+          requires:
+            - build
+            - test
+      - deploy:
+          requires:
+            - approve_deploy
