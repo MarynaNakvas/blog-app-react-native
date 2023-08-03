@@ -1,0 +1,5 @@
+{
+    "editor.suggest.showStatusBar": false,
+    "git.enableStatusBarSync": true,
+    "window.commandCenter": false
+}

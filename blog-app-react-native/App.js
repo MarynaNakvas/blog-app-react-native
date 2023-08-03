@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import bootstrap from './src/bootstrap';
+import useBootstrap from './src/bootstrap';
 import { store } from './src/store-redux/index';
 import MainNavigator from './src/navigation/MainNavigator';
 import AutNavigator from './src/navigation/AutNavigator';
@@ -22,7 +22,7 @@ const navigationTheme = {
 export default function App() {
   const [isSignedIn, setIsSignedIn] = useState(undefined);
 
-  const isReady = bootstrap();
+  const isReady = useBootstrap();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -35,7 +35,7 @@ export default function App() {
   }, []);
 
   if (!isReady) {
-      <AppLoading />
+    <AppLoading />
   }
 
   return (

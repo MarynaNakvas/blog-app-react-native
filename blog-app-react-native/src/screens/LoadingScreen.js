@@ -7,26 +7,32 @@ import { auth } from '../../firebaseConfig';
 import { THEME } from '../theme';
 import { setUser } from '../store-redux/slices/post';
 
-export const LoadingScreen = ({ navigation }) => { 
-  const dispatch = useDispatch(); 
+export const LoadingScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(setUser({ uid: user.uid, name: user.displayName, email: user.email }));
+        dispatch(
+          setUser({
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+          }),
+        );
         navigation.navigate('Main');
       } else {
         navigation.navigate('LogIn');
       }
     });
   }, [dispatch]);
- 
-    return (
-        <View style={styles.container}>
-            <ActivityIndicator color={THEME.MAIN_COLOR} size='large' />
-        </View>
-    )
-}
+
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator color={THEME.MAIN_COLOR} size="large" />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,4 +40,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});
