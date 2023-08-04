@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Blog App",
+    "slug": "blog-app-react-native",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/rn-icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/rn-splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#242832"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.marina-nakvas.blog-app",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.marina_nakvas.blog_app",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b8793292-5049-4a70-9c1d-5f06058d7c68"
+      }
+    }
+  }
+}
