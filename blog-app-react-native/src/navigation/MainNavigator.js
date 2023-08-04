@@ -15,9 +15,7 @@ import CreateNavigator from './CreateNavigator';
 
 const handleLogOut = () => {
   signOut(auth)
-    .then(() => {
-      console.log('Log Out');
-    })
+    .then(() => {})
     .catch((error) => console.log(error));
 };
 
