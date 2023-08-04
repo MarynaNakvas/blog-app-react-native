@@ -1,7 +1,5 @@
 # Blog App
-#### Mobile application for personal blogging
-
-[![](https://github.com/MarynaNakvas/blog-app-react-native/blob/dev/blog-app-react-native/assets/logo_react_native.png)](https://reactnative.dev/)
+#### Mobile application for personal blogging with [![](https://github.com/MarynaNakvas/blog-app-react-native/blob/dev/blog-app-react-native/assets/logo_react_native.png)](https://reactnative.dev/)
 
 ## Installation
 ##### Mobile device
