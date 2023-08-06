@@ -1,12 +1,12 @@
 # Blog App
-#### Mobile application for personal blogging with [![](https://github.com/MarynaNakvas/blog-app-react-native/blob/dev/blog-app-react-native/assets/logo_react_native.png)](https://reactnative.dev/)
+#### Mobile application for personal blogging with [![](https://github.com/MarynaNakvas/blog-app-react-native/blob/main/blog-app-react-native/assets/logo_react_native.png)](https://reactnative.dev/)
 
 ## Installation
 ##### Mobile device
 To use the app on a mobile device, you need to install the Expo Go app.
 And scan the QR code provided below. The ready-to-use application will open via Expo Go.
 
-![alt text](https://github.com/MarynaNakvas/blog-app-react-native/blob/dev/blog-app-react-native/assets/qrCode.png "QR code")
+![QR code](https://github.com/MarynaNakvas/blog-app-react-native/blob/main/blog-app-react-native/assets/qrCode.png "QR code")
 
 ##### Mobile device emulators or web browser
 To launch the application in the browser, follow these steps:
