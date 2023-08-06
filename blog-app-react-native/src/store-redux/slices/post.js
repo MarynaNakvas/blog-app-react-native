@@ -11,6 +11,11 @@ const initialState = {
   allPosts: [],
   bookedPosts: [],
   loading: false,
+  errors: {
+    nameError: null,
+    emailError: null,
+    passwordError: null,
+  },
 };
 
 const postSlice = createSlice({
@@ -19,6 +24,9 @@ const postSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    setError: (state, action) => {
+      state.errors = { ...state.errors, ...action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -59,5 +67,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { setUser } = postSlice.actions;
+export const { setUser, setError } = postSlice.actions;
 export default postSlice.reducer;
