@@ -8,14 +8,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textInputWrapper: {
+    width: '90%',
+  },
   textInput: {
     height: 40,
     fontSize: 18,
-    width: '90%',
+    width: '100%',
     borderColor: THEME.MAIN_COLOR,
     borderBottomWidth: 1,
-    marginTop: 8,
-    marginVertical: 15,
+    marginTop: 15,
   },
   textTitle: {
     color: THEME.MAIN_COLOR,

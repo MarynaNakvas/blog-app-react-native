@@ -6,6 +6,7 @@ import {
   Button,
   Platform,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -13,10 +14,15 @@ import {
 } from 'firebase/auth';
 
 import { auth, provider } from '../../firebaseConfig';
+import { EMAIL_REGEXP, handleFBError } from '../utils/validation';
+import { setError } from '../store-redux/slices/post';
 import { THEME } from '../theme';
 import { styles } from '../styles/logIn';
 
 export const LogInScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const errors = useSelector((state) => state.post.errors);
+
   const initialState = {
     email: '',
     password: '',
@@ -24,15 +30,43 @@ export const LogInScreen = ({ navigation }) => {
   };
   const [user, setUser] = useState(initialState);
 
+  const handleChangeEmail = (email) => {
+    setUser((prevValue) => ({ ...prevValue, email }))
+    if (email) {
+      if (!EMAIL_REGEXP.test(email)) {
+        dispatch(setError({ emailError: 'Invalid e-mail' }))
+      } else {
+        dispatch(setError({ emailError: null }))
+      }
+    }
+  }
+
+  const handleChangePassword = (password) => {
+    setUser((prevValue) => ({ ...prevValue, password }))
+    if (password.length < 6) {
+      dispatch(setError({ passwordError: 'Password contains at least 6 characters' }))
+    } else {
+      dispatch(setError({ passwordError: null }))
+    }
+  }
+
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, user.email, user.password)
+    if (!user.email) {
+      dispatch(setError({ emailError: 'Required field' }))
+    }
+    if (!user.email) {
+      dispatch(setError({ passwordError: 'Required field' }))
+    }
+    if (user.email && user.email && !errors.emailError && !errors.passwordError) {
+      signInWithEmailAndPassword(auth, user.email, user.password)
       .then(() => navigation.navigate('Main'))
       .catch((error) =>
         setUser((prevValue) => ({
           ...prevValue,
-          errorMessage: error.message,
+          errorMessage: handleFBError(error.message),
         })),
       );
+    }
   };
 
   const handleLogInWithGoogle = () => {
@@ -43,7 +77,7 @@ export const LogInScreen = ({ navigation }) => {
       .catch((error) =>
         setUser((prevValue) => ({
           ...prevValue,
-          errorMessage: error.message,
+          errorMessage: handleFBError(error.message),
         })),
       );
   };
@@ -56,25 +90,34 @@ export const LogInScreen = ({ navigation }) => {
       {user.errorMessage && (
         <Text style={styles.textError}>{user.errorMessage}</Text>
       )}
-      <TextInput
-        style={styles.textInput}
-        autoCapitalize="none"
-        placeholder="Email"
-        onChangeText={(email) =>
-          setUser((prevValue) => ({ ...prevValue, email }))
-        }
-        value={user.email}
-      />
-      <TextInput
-        style={styles.textInput}
-        secureTextEntry
-        autoCapitalize="none"
-        placeholder="Password"
-        onChangeText={(password) =>
-          setUser((prevValue) => ({ ...prevValue, password }))
-        }
-        value={user.password}
-      />
+
+      <View style={styles.textInputWrapper}>
+        <TextInput
+          style={styles.textInput}
+          autoCapitalize="none"
+          placeholder="Email"
+          onChangeText={(email) => handleChangeEmail(email)}
+          value={user.email}
+        />
+        {errors.emailError && (
+          <Text style={styles.textError}>{errors.emailError}</Text>
+        )}
+      </View>
+      
+      <View style={styles.textInputWrapper}>
+        <TextInput
+          style={styles.textInput}
+          secureTextEntry
+          autoCapitalize="none"
+          placeholder="Password"
+          onChangeText={(password) => handleChangePassword(password)}
+          value={user.password}
+        />
+        {errors.passwordError && (
+          <Text style={styles.textError}>{errors.passwordError}</Text>
+        )}
+      </View>
+
       <View style={styles.buttons}>
         <Button
           title="Log In"
