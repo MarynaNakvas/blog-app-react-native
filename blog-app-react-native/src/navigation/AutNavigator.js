@@ -5,7 +5,7 @@ import { LoadingScreen } from '../screens/LoadingScreen';
 import { LogInScreen } from '../screens/LoginScreen';
 import { SignUpScreen } from '../screens/SignUpScreen';
 
-import { navigatorOptions } from './navigation-utils';
+import { navigatorOptions } from '../utils/navigation-utils';
 
 const AutStack = createNativeStackNavigator();
 

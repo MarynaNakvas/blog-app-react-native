@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     flexDirection: 'row',
+    marginLeft: 10,
   },
   text: {
     color: THEME.MAIN_COLOR,

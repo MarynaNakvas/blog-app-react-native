@@ -4,7 +4,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { CreateScreen } from '../screens/CreateScreen';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
-import { navigatorOptions } from './navigation-utils';
+import { navigatorOptions } from '../utils/navigation-utils';
 
 const CreateStack = createNativeStackNavigator();
 

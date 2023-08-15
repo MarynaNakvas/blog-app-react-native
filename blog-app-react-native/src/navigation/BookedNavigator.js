@@ -7,7 +7,7 @@ import { PostScreen } from '../screens/PostScreen';
 import { BookedScreen } from '../screens/BookedScreen';
 import { toggleBooked } from '../store-redux/thunks/post';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
-import { navigatorOptions } from './navigation-utils';
+import { navigatorOptions } from '../utils/navigation-utils';
 
 const Booked = createNativeStackNavigator();
 
