@@ -41,10 +41,12 @@ export const MainScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.textWrapper}>
-        <Text style={{ fontSize: 20 }}>Hi</Text>
-        <Text style={styles.text}>{!!user.name && user.name}!</Text>
-      </View>
+      {!!user.name && (
+        <View style={styles.textWrapper}>
+          <Text style={{ fontSize: 20 }}>Autor:</Text>
+          <Text style={styles.text}>{user.name}</Text>
+        </View>
+      )}
       <PostList data={allPosts} onOpen={openPostHandler} />
     </View>
   );
